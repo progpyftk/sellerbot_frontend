@@ -146,7 +146,7 @@ export default {
   computed: {
     // verifica se é edição ou uma nova conta
     formTitle() {
-      return this.editedIndex === -1 ? "Add Account" : "Edit Account";
+      return this.editedIndex === -1 ? "Add Account " : "Edit Account";
     },
   },
 
