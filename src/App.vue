@@ -1,8 +1,9 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+  <v-app id="inspire" >
+    <v-navigation-drawer v-model="drawer" color="#f0f0f0" app>
+
+      <v-divider></v-divider>
       <v-list dense>
-        <v-subheader>REPORTS</v-subheader>
         <v-list-item-group v-model="selectedItem" color="primary">
           <v-list-item
             v-for="item in items"
@@ -21,13 +22,17 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar 
+      color="#f0f0f0"
+      rounded app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Seller Bot v1.0.1</v-toolbar-title>
+      <v-toolbar-title>
+        <v-avatar size="25"> <img src="./assets/laranja.png" /> </v-avatar>
+        Seller Bot v1.0.1</v-toolbar-title
+      >
     </v-app-bar>
 
-    <v-main>
+    <v-main >
       <router-view />
     </v-main>
   </v-app>
@@ -63,3 +68,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+#inspire {
+    background-color: var(--v-background-base);
+}
+</style>

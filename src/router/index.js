@@ -30,13 +30,13 @@ const routes = [
   },
   {
     path: "/price-events",
-    name: "price-events",
+    name: "priceevents",
     component: () =>
       import("../components/PriceEvents.vue"),
   },
   {
     path: "/logistic-events",
-    name: "logistic-events",
+    name: "logisticevents",
     component: () =>
       import("../components/LogisticEvents.vue"),
   },

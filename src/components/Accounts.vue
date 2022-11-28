@@ -12,7 +12,7 @@
       </v-flex>
     </div>
 
-    <div v-else>
+    <v-card class="pa-8" outlined tile v-else>
       <v-data-table
         :headers="headers"
         :items="accounts"
@@ -20,9 +20,9 @@
         class="elevation-1"
       >
         <template v-slot:top>
-          <v-toolbar flar>
+          <v-toolbar  rounded elevation="1">
             <v-toolbar-title>Accounts on Seller Bot</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-divider class="mx-4" insert vertical></v-divider>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on, attrs }">
@@ -49,8 +49,15 @@
                           label="Account Name"
                         ></v-text-field>
                         <v-text-field
+                          v-if="editedIndex == -1"
                           v-model="editedItem.ml_seller_id"
                           label="Seller ID"
+                        ></v-text-field>
+                        <v-text-field
+                          v-else
+                          v-model="editedItem.ml_seller_id"
+                          label="Seller ID - Not editable"
+                          readonly
                         ></v-text-field>
                         <v-text-field
                           v-model="editedItem.code"
@@ -80,6 +87,23 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5"
+                  >Are you sure you want to delete this item?</v-card-title
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete"
+                    >Cancel</v-btn
+                  >
+                  <v-btn color="blue darken-1" text @click="deleteSeller"
+                    >OK</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -87,7 +111,7 @@
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -96,12 +120,9 @@
 /* eslint-disable vue/no-unused-vars */
 /* eslint-disable vue/valid-v-slot */
 import axios from "axios";
-import AddAccount from "./AddAccount.vue";
 
 export default {
   name: "accounts",
-  components: { AddAccount },
-
   data() {
     return {
       dialog: false,
@@ -208,7 +229,51 @@ export default {
         });
     },
     editSeller() {
-      console.log("Preciso criar um update no Rails");
+      console.log("Fazendo o update do seller");
+      axios
+        .post(
+          "http://localhost:3000/seller/edit",
+          //.post('https://orandsellerbot.com/seller/create',
+          {
+            seller: {
+              nickname: this.editedItem.nickname,
+              code: this.editedItem.code,
+              ml_seller_id: this.editedItem.ml_seller_id,
+              access_token: this.editedItem.access_token,
+              refresh_token: this.editedItem.refresh_token,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.getAccounts();
+          this.close();
+        });
+    },
+
+    deleteSeller() {
+      console.log(this.editedItem.ml_seller_id);
+      axios
+        .post(
+          "http://localhost:3000/seller/delete",
+          //.post('https://orandsellerbot.com/seller/create',
+          { seller: { ml_seller_id: this.editedItem.ml_seller_id } }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.getAccounts();
+          this.closeDelete();
+        });
     },
     close() {
       // altereii um pouco pra ver o que acontece
@@ -220,6 +285,19 @@ export default {
       this.editedIndex = this.accounts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+    },
+    deleteItem(item) {
+      this.editedIndex = this.accounts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      console.log(this.editedItem.ml_seller_id);
+      this.dialogDelete = true;
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
   },
 };
