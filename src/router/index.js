@@ -40,6 +40,12 @@ const routes = [
     component: () =>
       import("../components/LogisticEvents.vue"),
   },
+  {
+    path: "/free-shipping",
+    name: "freeshipping",
+    component: () =>
+      import("../components/FreeShipping.vue"),
+  },
 ];
 
 const router = new VueRouter({

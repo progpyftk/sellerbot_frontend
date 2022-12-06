@@ -64,6 +64,11 @@ export default {
         icon: "mdi-truck-fast",
         router_name: "/logistic-events",
       },
+      {
+        title: "Frete Grátis",
+        icon: "mdi-truck-fast",
+        router_name: "/free-shipping",
+      },
     ],
   }),
 };
