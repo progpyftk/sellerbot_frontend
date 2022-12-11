@@ -33,7 +33,19 @@
           {{ formatDate(item.change_time) }}
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon small @click="changeShipping(item)"> mdi-truck-fast </v-icon>
+          <v-icon
+            v-if="updatingshipping == false"
+            small
+            @click="changeShipping(item)"
+          >
+            mdi-truck-fast
+          </v-icon>
+          <v-progress-circular
+            v-else
+            :size="15"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
         </template>
         <template v-slot:item.permalink="{ item }">
           <v-icon
@@ -77,6 +89,7 @@ export default {
       ],
       anuncios: {},
       loadingtable: false,
+      updatingshipping: false,
     };
   },
 
@@ -108,6 +121,7 @@ export default {
       window.open(item.permalink);
     },
     changeShipping(item) {
+      this.updatingshipping = true;
       this.editedItem = Object.assign({}, item);
       console.log(this.editedItem.ml_item_id);
       axios
@@ -121,8 +135,12 @@ export default {
         .catch((error) => {
           console.log("deu erro na alteracao do frete gratis");
           console.log(error);
+        })
+        .finally(() => {
+          this.getAnuncios();
+          this.updatingshipping = false;
         });
     },
   },
 };
-</script>
+</script>+

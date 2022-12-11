@@ -30,6 +30,13 @@
         <template v-slot:item.change_time="{ item }">
           {{ formatDate(item.change_time) }}
         </template>
+        <template v-slot:item.updated_at="{ item }">
+          {{ formatDate(item.updated_at) }}
+        </template>
+        <template v-slot:item.created_at="{ item }">
+          {{ formatDate(item.created_at) }}
+        </template>
+        
         <template v-slot:item.permalink="{ item }">
           <v-icon large dense color="orange darken-2" class="mr-2" @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
@@ -59,6 +66,8 @@ export default {
         { text: "New Price", value: "new_price" },
         { text: "Old Price", value: "old_price" },
         { text: "Change Time", value: "change_time" },
+        { text: "Update Time", value: "updated_at" },
+        { text: "Create Time", value: "created_at" },
         { text: "Link", value: "permalink" },
       ],
       priceevents: {},
@@ -88,7 +97,7 @@ export default {
     },
     formatDate(item) {
       console.log(item);
-      return moment(item).format("DD/MM/YY");
+      return moment(item).format("DD/MM/YY H:mm");
     },
     linkAnuncio(item) { 
       window.open(item.permalink);
