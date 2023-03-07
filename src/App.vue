@@ -65,12 +65,12 @@ export default {
         router_name: "/logistic-events",
       },
       {
-        title: "Frete Grátisssssss",
+        title: "Frete Grátis",
         icon: "mdi-truck-fast",
         router_name: "/free-shipping",
       },
       {
-        title: "Flex",
+        title: "Flexxxxxx",
         icon: "mdi-truck-fast",
         router_name: "/flex",
       },

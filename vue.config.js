@@ -1,8 +1,13 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: ["vuetify"],
-  devServer: {
-    public: '<docker_host_external_ip>:8080',
-  },
+  chainWebpack: config => {
+    if (process.env.NODE_ENV === 'development') {
+      config
+        .output
+        .filename('[name].[hash].js')
+        .end()
+    }
+  }
   
 });
