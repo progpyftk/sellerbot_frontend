@@ -70,7 +70,7 @@ export default {
         router_name: "/free-shipping",
       },
       {
-        title: "Flexxxxxx",
+        title: "Flex",
         icon: "mdi-truck-fast",
         router_name: "/flex",
       },
