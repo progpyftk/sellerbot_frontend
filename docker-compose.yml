@@ -9,8 +9,12 @@ services:
         dockerfile: Dockerfile
       volumes:
         - '.:/app'
+        - '.:/src'
         - '/app/node_modules'
+      stdin_open: true
+      tty: true
       ports:
         - '8080:8080'
       environment: 
         - CHOKIDAR_USEPOLLING=true
+        - CHOKIDAR_USEPOLLING=1
