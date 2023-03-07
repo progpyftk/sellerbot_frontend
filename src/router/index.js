@@ -46,6 +46,12 @@ const routes = [
     component: () =>
       import("../components/FreeShipping.vue"),
   },
+  {
+    path: "/flex",
+    name: "flex",
+    component: () =>
+      import("../components/Flex.vue"),
+  },
 ];
 
 const router = new VueRouter({
