@@ -9,9 +9,12 @@ services:
       volumes:
         - './src:/app/src'
         - '/app/node_modules'
+        - './:/usr/src/app'
+        - './:/app'
       stdin_open: true
       tty: true
       ports:
         - '8080:8080'
       environment: 
         - CHOKIDAR_USEPOLLING=true
+        - HOST=0.0.0.0
