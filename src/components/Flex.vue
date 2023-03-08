@@ -27,19 +27,19 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.change_time="{ item }">
-          {{ formatDate(item.change_time) }}
-        </template>
-        <template v-slot:item.updated_at="{ item }">
-          {{ formatDate(item.updated_at) }}
-        </template>
-        <template v-slot:item.created_at="{ item }">
-          {{ formatDate(item.created_at) }}
-        </template>
-        
-        <template v-slot:item.permalink="{ item }">
+        <template v-slot:item.link="{ item }">
           <v-icon large dense color="orange darken-2" class="mr-2" @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
+
+        <template v-slot:item.actions="{ item }">
+          <v-icon v-if="item.flex == 204" @click="turnOffFlex(item)">
+            mdi-motorbike-off
+          </v-icon>
+        </template>
+
+
+
+        
       </v-data-table>
     </v-card>
   </div>
@@ -50,25 +50,21 @@
 /* eslint-disable vue/no-unused-vars */
 /* eslint-disable vue/valid-v-slot */
 import axios from "axios";
-import moment from "moment";
 
 export default {
   name: "flex",
   data() {
     return {
       headers: [
-        {
-          text: "Anúncio",
-          align: "start",
-          sortable: false,
-          value: "item_id",
-        },
-        { text: "New Price", value: "new_price" },
-        { text: "Old Price", value: "old_price" },
-        { text: "Change Time", value: "change_time" },
-        { text: "Update Time", value: "updated_at" },
-        { text: "Create Time", value: "created_at" },
-        { text: "Link", value: "permalink" },
+        { text: "Anúncio", align: "start", sortable: false, value: "ml_item_id" },
+        { text: "Seller", value: "seller_nickname" },
+        { text: "SKU", value: "sku" },
+        { text: "Quantidade", value: "quantity" },
+        { text: "Flex", value: "flex" },
+        { text: "Link", value: "link" },
+        { text: "Actions", value: "actions", sortable: false },
+
+
       ],
       items: {},
       loadingtable: false,
@@ -95,12 +91,24 @@ export default {
           this.loadingtable = false;
         });
     },
-    formatDate(item) {
-      console.log(item);
-      return moment(item).format("DD/MM/YY H:mm");
-    },
     linkAnuncio(item) { 
-      window.open(item.permalink);
+      window.open(item.link);
+    },
+    turnOffFlex(item) {
+
+      console.log(item.ml_item_id);
+      axios
+        .post("http://localhost:3000/fulfillment/flex", {
+          item: { ml_item_id: item.ml_item_id },
+        })
+        .then((res) => {
+          console.log("foi tudo bem");
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log("deu erro na alteracao do frete gratis");
+          console.log(error);
+        })
     },
   },
 };
