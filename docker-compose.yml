@@ -1,15 +1,13 @@
 version: '3.7'
 
 services:
-
-    client:
-      container_name: client
+    frontend:
+      container_name: sellerbot_frontend
       build:
         context: .
         dockerfile: Dockerfile
       volumes:
-        - '.:/app'
-        - '.:/src'
+        - './src:/app/src'
         - '/app/node_modules'
       stdin_open: true
       tty: true
@@ -17,4 +15,3 @@ services:
         - '8080:8080'
       environment: 
         - CHOKIDAR_USEPOLLING=true
-        - CHOKIDAR_USEPOLLING=1
