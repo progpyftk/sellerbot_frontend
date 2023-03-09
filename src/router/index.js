@@ -52,6 +52,12 @@ const routes = [
     component: () =>
       import("../components/Flex.vue"),
   },
+  {
+    path: "/flex-me",
+    name: "flex-me",
+    component: () =>
+      import("../components/FlexME.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -18,14 +18,11 @@
         :items="items"
         item-key="item_id"
         class="elevation-1"
-        :sort-by="['quantity']"
-        :sort-desc="[false]"
-        :item-class="itemRowBackground"
         must-sort
       >
         <template v-slot:top>
           <v-toolbar flar>
-            <v-toolbar-title>Controle FLEX - FULFILLMENT</v-toolbar-title>
+            <v-toolbar-title>Alterações de Preços</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
           </v-toolbar>
@@ -34,16 +31,13 @@
           <v-icon large dense color="orange darken-2" class="mr-2" @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
 
-        <template v-slot:item.recommendation="{ item }">
-          <p v-if="item.quantity<10 && item.flex==404">Ok</p>
-          <p v-if="item.quantity<10 && item.flex==204">Desligar</p>
-          <p v-if="item.quantity>10 && item.flex==404">Ligar</p>
-          <p v-if="item.quantity>10 && item.flex==204">OK</p>
-        </template>
-
         <template v-slot:item.actions="{ item }">
           <v-icon v-if="item.flex == 204" @click="turnOffFlex(item)" color="red">
             mdi-motorbike-off
+          </v-icon>
+
+          <v-icon v-else @click="turnOnFlex(item)" color="green">
+            mdi-motorbike
           </v-icon>
         </template>
 
@@ -62,7 +56,7 @@
 import axios from "axios";
 
 export default {
-  name: "flex",
+  name: "flex-me",
   data() {
     return {
       headers: [
@@ -73,8 +67,6 @@ export default {
         { text: "Flex", value: "flex" },
         { text: "Link", value: "link" },
         { text: "Ligar/Desligar", value: "actions", sortable: false },
-        { text: "Recomendação", value: "recommendation", sortable: false },
-
 
 
       ],
@@ -92,7 +84,7 @@ export default {
       this.loadingtable = true;
       axios
         //.get("https://orandsellerbot.com/fulfillment/flex")
-        .get("http://localhost:3000/fulfillment/flex")
+        .get("http://localhost:3000/fulfillment/flex-me")
         .then((res) => {
           this.items = res.data;
           console.log(res.data);
@@ -109,7 +101,7 @@ export default {
     turnOffFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://localhost:3000/fulfillment/flex", {
+        .post("http://localhost:3000/fulfillment/flex-me", {
           item: { ml_item_id: item.ml_item_id },
         })
         .then((res) => {
@@ -127,7 +119,7 @@ export default {
     turnOnFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://localhost:3000/fulfillment/flex", {
+        .post("http://localhost:3000/fulfillment/flex-me", {
           item: { ml_item_id: item.ml_item_id },
         })
         .then((res) => {
@@ -142,42 +134,6 @@ export default {
           this.getItems();
         });
     },
-    itemRowBackground(item) {
-      console.log('Entre na funcao da cor')
-      if (item.quantity < 10 && item.flex == 204) {
-        return "style-1";
-      }
-      if (item.quantity > 20 && item.flex == 204) {
-        return "style-2";
-      }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == 204) {
-        return "style-3";
-      }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == 404) {
-        return "style-1";
-      }
-      if (item.quantity > 20 && item.flex == 404) {
-        return "style-1";
-      }
-      if (item.quantity < 10 && item.flex == 404) {
-        return "style-2";
-      }
-    }
   },
 };
-
-
 </script>
-
-<style>
-.style-1{
-  background-color: rgb(240, 207, 204);
-}
-.style-2{
-  background-color: rgb(211, 249, 230);
-}
-.style-3{
-  background-color: rgb(244, 245, 218);
-}
-</style>
-
