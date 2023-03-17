@@ -58,6 +58,19 @@ const routes = [
     component: () =>
       import("../components/FlexME.vue"),
   },
+  {
+    path: "/fiscal-data",
+    name: "fiscal-data",
+    component: () =>
+      import("../components/FiscalData.vue"),
+  },
+  {
+    path: "/general-data",
+    name: "general-data",
+    component: () =>
+      import("../components/GeneralData.vue"),
+  },
+  
 ];
 
 const router = new VueRouter({

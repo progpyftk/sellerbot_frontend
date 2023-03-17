@@ -79,6 +79,16 @@ export default {
         icon: "mdi-truck-fast",
         router_name: "/flex-me",
       },
+      {
+        title: "API - Dados Fiscais",
+        icon: "mdi-api",
+        router_name: "/fiscal-data",
+      },
+      {
+        title: "API - Dados Gerais",
+        icon: "mdi-api",
+        router_name: "/general-data",
+      },
     ],
   }),
 };
