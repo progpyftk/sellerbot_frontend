@@ -26,7 +26,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.links="{ item }">
+        <template v-slot:item.permalink="{ item }">
           <v-icon large dense color="orange darken-2" class="mr-2" @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
       </v-data-table>
@@ -56,8 +56,8 @@ export default {
         { text: "Qtt Disponível", value: "available_quantity" },
         { text: "Vendidos", value: "sold_quantity" },
         { text: "Logística", value: "logistic_type", sortable: false },
-        { text: "Seller", value: "seller_nickname", sortable: false },
-        { text: "Link do Full", value: "links", sortable: false },
+        { text: "Seller", value: "seller_id", sortable: false },
+        { text: "Link do Full", value: "permalink", sortable: false },
       ],
       anuncios: {},
       editedIndex: -1,
