@@ -67,11 +67,14 @@ export default {
     return {
       headers: [
         { text: "Anúncio", align: "start", sortable: false, value: "ml_item_id" },
+        { text: "É variação?", value: "variation" },
+        { text: "ID Variação", value: "variation_id" },
         { text: "Seller", value: "seller_nickname" },
         { text: "SKU", value: "sku" },
         { text: "Quantidade", value: "quantity" },
         { text: "Flex", value: "flex" },
         { text: "Link", value: "link" },
+        
         { text: "Ligar/Desligar", value: "actions", sortable: false },
         { text: "Recomendação", value: "recommendation", sortable: false },
 
