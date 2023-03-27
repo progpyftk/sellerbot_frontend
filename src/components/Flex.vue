@@ -35,21 +35,17 @@
         </template>
 
         <template v-slot:item.recommendation="{ item }">
-          <p v-if="item.quantity<10 && item.flex==404">Ok</p>
-          <p v-if="item.quantity<10 && item.flex==204">Desligar</p>
-          <p v-if="item.quantity>10 && item.flex==404">Ligar</p>
-          <p v-if="item.quantity>10 && item.flex==204">OK</p>
+          <p v-if="item.quantity<10 && item.flex=='Desligado'">Ok</p>
+          <p v-if="item.quantity<10 && item.flex=='Ligado'">Desligar</p>
+          <p v-if="item.quantity>10 && item.flex=='Desligado'">Ligar</p>
+          <p v-if="item.quantity>10 && item.flex=='Ligado'">OK</p>
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon v-if="item.flex == 204" @click="turnOffFlex(item)" color="red">
+          <v-icon v-if="item.flex == 'Ligado'" @click="turnOffFlex(item)" color="red">
             mdi-motorbike-off
           </v-icon>
         </template>
-
-
-
-        
       </v-data-table>
     </v-card>
   </div>
@@ -74,12 +70,8 @@ export default {
         { text: "Quantidade", value: "quantity" },
         { text: "Flex", value: "flex" },
         { text: "Link", value: "link" },
-        
         { text: "Ligar/Desligar", value: "actions", sortable: false },
         { text: "Recomendação", value: "recommendation", sortable: false },
-
-
-
       ],
       items: {},
       loadingtable: false,
@@ -134,11 +126,9 @@ export default {
           item: { ml_item_id: item.ml_item_id },
         })
         .then((res) => {
-          console.log("foi tudo bem");
           console.log(res);
         })
         .catch((error) => {
-          console.log("deu erro na alteracao do frete gratis");
           console.log(error);
         })
         .finally(() => {
@@ -147,22 +137,22 @@ export default {
     },
     itemRowBackground(item) {
       console.log('Entre na funcao da cor')
-      if (item.quantity < 10 && item.flex == 204) {
+      if (item.quantity < 10 && item.flex == "Ligado") {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == 204) {
+      if (item.quantity > 20 && item.flex == "Ligado") {
         return "style-2";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == 204) {
+      if (item.quantity < 20 && item.quantity >10 && item.flex == "Ligado") {
         return "style-3";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == 404) {
+      if (item.quantity < 20 && item.quantity >10 && item.flex == "Desligado") {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == 404) {
+      if (item.quantity > 20 && item.flex == "Desligado") {
         return "style-1";
       }
-      if (item.quantity < 10 && item.flex == 404) {
+      if (item.quantity < 10 && item.flex == "Desligado") {
         return "style-2";
       }
     }

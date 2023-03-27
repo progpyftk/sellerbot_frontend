@@ -80,10 +80,9 @@ export default {
           sortable: false,
           value: "ml_item_id",
         },
-
         { text: "Título", value: "title" },
+        { text: "Seller ID", value: "seller" },
         { text: "Preço", value: "price" },
-        { text: "Logística", value: "change_time" },
         { text: "Link", value: "permalink", sortable: false },
         { text: "Actions", value: "actions", sortable: false },
       ],
@@ -101,7 +100,6 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        //.get("https://orandsellerbot.com/fitem/logistic-events")
         .get("http://localhost:3000/item/free-shipping")
         .then((res) => {
           this.anuncios = res.data;
