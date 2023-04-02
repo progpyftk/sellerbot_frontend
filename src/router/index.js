@@ -70,6 +70,12 @@ const routes = [
     component: () =>
       import("../components/GeneralData.vue"),
   },
+  {
+    path: "/update-db",
+    name: "updatedatabase",
+    component: () =>
+      import("../components/UpdateDatabase.vue"),
+  },
   
 ];
 

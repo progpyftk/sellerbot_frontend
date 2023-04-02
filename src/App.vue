@@ -89,6 +89,11 @@ export default {
         icon: "mdi-api",
         router_name: "/general-data",
       },
+      {
+        title: "Atualizar DB",
+        icon: "mdi-database",
+        router_name: "/update-db",
+      },
     ],
   }),
 };
