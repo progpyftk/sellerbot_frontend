@@ -35,10 +35,25 @@
         </template>
 
         <template v-slot:item.recommendation="{ item }">
-          <p v-if="item.quantity<10 && item.flex=='Desligado'">Ok</p>
-          <p v-if="item.quantity<10 && item.flex=='Ligado'">Desligar</p>
-          <p v-if="item.quantity>10 && item.flex=='Desligado'">Ligar</p>
-          <p v-if="item.quantity>10 && item.flex=='Ligado'">OK</p>
+          <p v-if="item.quantity<10 && item.flex==false">Ok</p>
+          <p v-if="item.quantity<10 && item.flex==true">Desligar</p>
+          <p v-if="item.quantity>10 && item.flex==false">Ligar</p>
+          <p v-if="item.quantity>10 && item.flex==true">OK</p>
+        </template>
+
+        <template v-slot:item.flex="{ item }">
+          <p v-if="item.flex==false">Desligado</p>
+          <p v-if="item.flex==true">Ligado</p>
+        </template>
+
+        <template v-slot:item.variation="{ item }">
+          <p v-if="item.variation==false">Não</p>
+          <p v-if="item.variation==true">Sim</p>
+        </template>
+
+        <template v-slot:item.variation_id="{ item }">
+          <p v-if="item.variation_id==nil">Não tem variação</p>
+          <p v-else > {{ item.variation_id }}</p>
         </template>
 
         <template v-slot:item.actions="{ item }">
@@ -137,22 +152,22 @@ export default {
     },
     itemRowBackground(item) {
       console.log('Entre na funcao da cor')
-      if (item.quantity < 10 && item.flex == "Ligado") {
+      if (item.quantity < 10 && item.flex == true) {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == "Ligado") {
+      if (item.quantity > 20 && item.flex == true) {
         return "style-2";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == "Ligado") {
+      if (item.quantity < 20 && item.quantity >10 && item.flex == true) {
         return "style-3";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == "Desligado") {
+      if (item.quantity < 20 && item.quantity >10 && item.flex == false) {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == "Desligado") {
+      if (item.quantity > 20 && item.flex == false) {
         return "style-1";
       }
-      if (item.quantity < 10 && item.flex == "Desligado") {
+      if (item.quantity < 10 && item.flex == false) {
         return "style-2";
       }
     }

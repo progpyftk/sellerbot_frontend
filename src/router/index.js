@@ -53,12 +53,6 @@ const routes = [
       import("../components/Flex.vue"),
   },
   {
-    path: "/flex-me",
-    name: "flex-me",
-    component: () =>
-      import("../components/FlexME.vue"),
-  },
-  {
     path: "/fiscal-data",
     name: "fiscal-data",
     component: () =>
