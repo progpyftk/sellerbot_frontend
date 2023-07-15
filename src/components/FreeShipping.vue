@@ -81,7 +81,7 @@ export default {
           value: "ml_item_id",
         },
         { text: "Título", value: "title" },
-        { text: "Seller ID", value: "seller" },
+        { text: "Seller", value: "seller_nickname" },
         { text: "Preço", value: "price" },
         { text: "Link", value: "permalink", sortable: false },
         { text: "Actions", value: "actions", sortable: false },

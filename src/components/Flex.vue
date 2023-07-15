@@ -57,7 +57,7 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-icon v-if="item.flex == 'Ligado'" @click="turnOffFlex(item)" color="red">
+          <v-icon v-if="item.flex == true" @click="turnOffFlex(item)" color="red">
             mdi-motorbike-off
           </v-icon>
         </template>

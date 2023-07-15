@@ -184,8 +184,8 @@ export default {
     getAccounts() {
       this.loadingtable = true;
       axios
-        //.get("https://orandsellerbot.com/seller/index")
-        .get("http://localhost:3000/seller/index")
+        .get("https://api.orandsellerbot.com/seller/index")
+        //.get("http://localhost:3000/seller/index")
         .then((res) => {
           this.accounts = res.data;
           console.log(res.data);
@@ -206,9 +206,8 @@ export default {
     createSeller() {
       console.log();
       axios
-        .post(
-          "http://localhost:3000/seller/create",
-          //.post('https://orandsellerbot.com/seller/create',
+          .post("https://api.orandsellerbot.com/seller/create",
+          //.post('http://localhost:3000/seller/create',
           {
             seller: {
               nickname: this.editedItem.nickname,
