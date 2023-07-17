@@ -101,8 +101,7 @@ export default {
     getItems() {
       this.loadingtable = true;
       axios
-        //.get("https://orandsellerbot.com/fulfillment/flex")
-        .get("http://localhost:3000/fulfillment/flex")
+        .get("http://api.sellerbot.com.br/fulfillment/flex")
         .then((res) => {
           this.items = res.data;
           console.log(res.data);
@@ -119,7 +118,7 @@ export default {
     turnOffFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://localhost:3000/fulfillment/flex", {
+        .post("http://api.sellerbot.com.br/fulfillment/flex", {
           item: { ml_item_id: item.ml_item_id },
         })
         .then((res) => {
@@ -137,7 +136,7 @@ export default {
     turnOnFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://localhost:3000/fulfillment/flex", {
+        .post("http://api.sellerbot.com.br/fulfillment/flex", {
           item: { ml_item_id: item.ml_item_id },
         })
         .then((res) => {

@@ -49,7 +49,7 @@ export default {
       this.textareavalue = 'Buscando na API ...';
       axios
         .post(
-          "http://localhost:3000/item/fiscal-data",
+          "http://api.sellerbot.com.br/item/fiscal-data",
           { item: { ml_item_id: this.ml_item, }, }
         )
         .then((res) => {

@@ -184,7 +184,7 @@ export default {
     getAccounts() {
       this.loadingtable = true;
       axios
-        .get("https://api.orandsellerbot.com/seller/index")
+        .get("http://api.sellerbot.com.br/seller/index")
         //.get("http://localhost:3000/seller/index")
         .then((res) => {
           this.accounts = res.data;
@@ -192,6 +192,7 @@ export default {
           this.loadingtable = false;
         })
         .catch((error) => {
+          console.log("Deu erro, log do erro abaixo:");
           console.log(error);
           this.loadingtable = false;
         });
@@ -204,15 +205,14 @@ export default {
       }
     },
     createSeller() {
-      console.log();
+      console.log("estou entrando na criação do seller");
       axios
-          .post("https://api.orandsellerbot.com/seller/create",
-          //.post('http://localhost:3000/seller/create',
+          //.post("http://api.sellerbot.com.br/seller/create",
+          .post('http://localhost:3000/signup',
           {
-            seller: {
-              nickname: this.editedItem.nickname,
-              code: this.editedItem.code,
-              ml_seller_id: this.editedItem.ml_seller_id,
+            user: {
+              email: "lorenzo@gmail.com",
+              password: "123456",
             },
           }
         )
@@ -220,6 +220,7 @@ export default {
           console.log(res);
         })
         .catch((error) => {
+          console.log("Deu erro, log do erro abaixo:");
           console.log(error);
         })
         .finally(() => {
@@ -230,9 +231,8 @@ export default {
     editSeller() {
       console.log("Fazendo o update do seller");
       axios
-        .post(
-          "http://localhost:3000/seller/edit",
-          //.post('https://orandsellerbot.com/seller/create',
+        .post( "http://api.sellerbot.com.br/seller/edit",
+          //'http://localhost:3000/seller/edit',
           {
             seller: {
               nickname: this.editedItem.nickname,
@@ -258,9 +258,8 @@ export default {
     deleteSeller() {
       console.log(this.editedItem.ml_seller_id);
       axios
-        .post(
-          "http://localhost:3000/seller/delete",
-          //.post('https://orandsellerbot.com/seller/create',
+        .post( "http://api.sellerbot.com.br/seller/delete",
+          // "http://localhost:3000/seller/delete",
           { seller: { ml_seller_id: this.editedItem.ml_seller_id } }
         )
         .then((res) => {

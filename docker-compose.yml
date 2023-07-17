@@ -3,12 +3,7 @@ version: '3.7'
 services:
     frontend:
       container_name: sellerbot_frontend
-      build:
-        context: .
-        dockerfile: Dockerfile
-      volumes:
-        - '/app/node_modules'
-        - './:/app'
+      image: losimonassi/sellerbot_frontend
       stdin_open: true
       tty: true
       ports:

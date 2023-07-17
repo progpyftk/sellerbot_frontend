@@ -46,7 +46,7 @@ export default {
     updateDatabse() {
       this.loading = true;
       axios
-        .get("http://localhost:3000/item/update-database")
+        .get("http://api.sellerbot.com.br/item/update-database")
         .then((res) => {
           this.message = 'Atualizando ...'
           console.log("Atualizando DB");

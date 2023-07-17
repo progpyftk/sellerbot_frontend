@@ -83,8 +83,7 @@ export default {
     getPriceEvents() {
       this.loadingtable = true;
       axios
-        //.get("https://orandsellerbot.com/fitem/price-events")
-        .get("http://localhost:3000/item/price-events")
+        .get("http://api.sellerbot.com.br/item/price-events")
         .then((res) => {
           this.priceevents = res.data;
           console.log(res.data);

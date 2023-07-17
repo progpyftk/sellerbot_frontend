@@ -74,8 +74,7 @@
         getLogisticEvents() {
         this.loadingtable = true;
         axios
-          //.get("https://orandsellerbot.com/fitem/logistic-events")
-          .get("http://localhost:3000/item/logistic-events")
+          .get("http://api.sellerbot.com.br/item/logistic-events")
           .then((res) => {
             this.logisticevents = res.data;
             console.log(res.data);

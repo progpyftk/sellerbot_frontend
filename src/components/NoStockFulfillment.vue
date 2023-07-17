@@ -73,8 +73,7 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        //.get("https://orandsellerbot.com/fulfillment/index")
-        .get("http://localhost:3000/fulfillment/index")
+        .get("http://api.sellerbot.com.br/fulfillment/index")
         .then((res) => {
           this.anuncios = res.data;
           console.log(res.data);
