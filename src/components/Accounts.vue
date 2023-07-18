@@ -157,6 +157,7 @@ export default {
       },
 
       loadingtable: false,
+      authorization_token: ""
     };
   },
 
@@ -183,12 +184,15 @@ export default {
   methods: {
     getAccounts() {
       this.loadingtable = true;
+      console.log('Este eh o token de auth')
+      console.log(this.authorization_token)
       axios
-        .get("http://api.sellerbot.com.br/seller/index")
-        //.get("http://localhost:3000/seller/index")
+        //.get("http://api.sellerbot.com.br/seller/index")
+        .get("http://localhost:3000/seller/index", { headers: { Authorization: this.authorization_token } })
         .then((res) => {
           this.accounts = res.data;
           console.log(res.data);
+          this.authorization_token = res.headers.authorization;
           this.loadingtable = false;
         })
         .catch((error) => {
@@ -206,18 +210,24 @@ export default {
     },
     createSeller() {
       console.log("estou entrando na criação do seller");
+      console.log('Token atual:');
+      console.log(this.authorization_token);
       axios
           //.post("http://api.sellerbot.com.br/seller/create",
-          .post('http://localhost:3000/signup',
+          .post('http://localhost:3000/login',
           {
             user: {
               email: "lorenzo@gmail.com",
               password: "123456",
-            },
+            }
           }
         )
         .then((res) => {
           console.log(res);
+          console.log('Verificar se foi recebido o token de autoriazação');
+          console.log(res.headers.authorization);
+          this.authorization_token = res.headers.authorization;
+          console.log(this.authorization_token)
         })
         .catch((error) => {
           console.log("Deu erro, log do erro abaixo:");
