@@ -21,7 +21,7 @@
       >
         <template v-slot:top>
           <v-toolbar  rounded elevation="1">
-            <v-toolbar-title>Accounts on Seller Bot</v-toolbar-title>
+            <v-toolbar-title>Accounts on Seller Bot {{ $store.state.authToken }}</v-toolbar-title>
             <v-divider class="mx-4" insert vertical></v-divider>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
@@ -184,19 +184,18 @@ export default {
   methods: {
     getAccounts() {
       this.loadingtable = true;
-      console.log('Este eh o token de auth')
-      console.log(this.authorization_token)
+      console.log('--- auth token ---')
+      console.log( this.$store.state.authToken )
       axios
         //.get("http://api.sellerbot.com.br/seller/index")
-        .get("http://localhost:3000/seller/index", { headers: { Authorization: this.authorization_token } })
+        .get("http://localhost:3000/seller/index", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.accounts = res.data;
           console.log(res.data);
-          this.authorization_token = res.headers.authorization;
           this.loadingtable = false;
         })
         .catch((error) => {
-          console.log("Deu erro, log do erro abaixo:");
+          console.log("--- erro no axios ---:");
           console.log(error);
           this.loadingtable = false;
         });
@@ -209,25 +208,21 @@ export default {
       }
     },
     createSeller() {
-      console.log("estou entrando na criação do seller");
+      console.log("--- create seller() ---");
       console.log('Token atual:');
       console.log(this.authorization_token);
       axios
-          //.post("http://api.sellerbot.com.br/seller/create",
-          .post('http://localhost:3000/login',
+          .post("http://api.sellerbot.com.br/seller/create",
           {
-            user: {
-              email: "lorenzo@gmail.com",
-              password: "123456",
-            }
+            seller: {
+              nickname: this.editedItem.nickname,
+              code: this.editedItem.code,
+              ml_seller_id: this.editedItem.ml_seller_id,
+            },
           }
         )
         .then((res) => {
           console.log(res);
-          console.log('Verificar se foi recebido o token de autoriazação');
-          console.log(res.headers.authorization);
-          this.authorization_token = res.headers.authorization;
-          console.log(this.authorization_token)
         })
         .catch((error) => {
           console.log("Deu erro, log do erro abaixo:");

@@ -70,6 +70,18 @@ const routes = [
     component: () =>
       import("../components/UpdateDatabase.vue"),
   },
+  {
+    path: "/login",
+    name: "login",
+    component: () =>
+      import("../components/Login.vue"),
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: () =>
+      import("../components/Signup.vue"),
+  },
   
 ];
 

@@ -28,8 +28,10 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <v-avatar size="25"> <img src="./assets/laranja.png" /> </v-avatar>
-        Seller Bot v1.0.1</v-toolbar-title
-      >
+        Seller Bot v1.0.  </v-toolbar-title>
+        <v-spacer></v-spacer>
+          User: {{ $store.state.currentUser }}
+        <v-spacer></v-spacer>
     </v-app-bar>
 
     <v-main >
@@ -43,10 +45,21 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-      { title: "Contas", icon: "mdi-account-key", router_name: "/accounts" },
+    { 
+        title: "Signup", 
+        icon: "mdi-account-plus", 
+        router_name: "/signup" },
+      { 
+        title: "Login", 
+        icon: "mdi-login", 
+        router_name: "/login" },
+      { 
+        title: "Contas", 
+        icon: "mdi-playlist-edit", 
+        router_name: "/accounts" },
       {
         title: "Full Sem Estoque",
-        icon: "mdi-flask-empty-outline",
+        icon: "mdi-package-variant",
         router_name: "/no-stock-fulfillment",
       },
       {
