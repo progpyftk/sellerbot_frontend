@@ -147,8 +147,8 @@ export default {
       console.log('--- auth token ---')
       console.log(this.$store.state.authToken)
       axios
-        //.get("http://api.sellerbot.com.br/seller/index")
-        .get("http://localhost:3000/seller/index", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/seller/index",
+          { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.accounts = res.data;
           console.log(res.data);
@@ -176,8 +176,7 @@ export default {
       console.log('Token atual:');
       console.log(this.$store.state.authToken);
       axios
-        .post(
-          "http://localhost:3000/seller/create",
+        .post(this.$store.state.backend_url + "/seller/create",
           {
             seller: {
               nickname: this.editedItem.nickname,
@@ -206,9 +205,7 @@ export default {
     editSeller() {
       console.log("Fazendo o update do seller");
       axios
-        .post(
-          //"http://api.sellerbot.com.br/seller/edit",
-          'http://localhost:3000/seller/edit',
+        .post(this.$store.state.backend_url + "/seller/edit",
           {
             seller: {
               nickname: this.editedItem.nickname,
@@ -218,7 +215,7 @@ export default {
               refresh_token: this.editedItem.refresh_token,
             }
           },
-          {headers: { Authorization: this.$store.state.authToken }}
+          { headers: { Authorization: this.$store.state.authToken } }
         )
         .then((res) => {
           console.log(res);
@@ -239,9 +236,7 @@ export default {
     deleteSeller() {
       console.log(this.editedItem.ml_seller_id);
       axios
-        .post(
-          // "http://api.sellerbot.com.br/seller/delete",
-          "http://localhost:3000/seller/delete",
+        .post(this.$store.state.backend_url + "/seller/delete",
           { seller: { ml_seller_id: this.editedItem.ml_seller_id, } },
           { headers: { Authorization: this.$store.state.authToken } }
         )

@@ -46,7 +46,7 @@ export default {
     updateDatabse() {
       this.loading = true;
       axios
-        .get("http://api.sellerbot.com.br/item/update-database", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/item/update-database", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.message = 'Atualizando ...'
           console.log("Atualizando DB");

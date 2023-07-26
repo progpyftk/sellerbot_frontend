@@ -74,7 +74,7 @@
         getLogisticEvents() {
         this.loadingtable = true;
         axios
-          .get("http://api.sellerbot.com.br/item/logistic-events", { headers: { Authorization: this.$store.state.authToken } })
+          .get(this.$store.state.backend_url + "/item/logistic-events", { headers: { Authorization: this.$store.state.authToken } })
           .then((res) => {
             this.logisticevents = res.data;
             console.log(res.data);

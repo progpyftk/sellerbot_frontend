@@ -78,7 +78,7 @@ export default {
       console.log(this.email)
       console.log(this.password)
       axios
-          .post('http://localhost:3000/signup',
+          .post(this.$store.state.backend_url + '/signup',
           {
             user: {
               email: this.email,

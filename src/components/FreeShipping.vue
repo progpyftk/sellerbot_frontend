@@ -74,7 +74,7 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        .get("http://api.sellerbot.com.br/item/free-shipping", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/item/free-shipping", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.anuncios = res.data;
           console.log(res.data);
@@ -97,8 +97,7 @@ export default {
       this.editedItem = Object.assign({}, item);
       console.log(this.editedItem.ml_item_id);
       axios
-        .post(
-          "http://api.sellerbot.com.br/item/free-shipping", 
+        .post(this.$store.state.backend_url + "/item/free-shipping", 
         {item: { ml_item_id: this.editedItem.ml_item_id }},
         { headers: { Authorization: this.$store.state.authToken } }
         )

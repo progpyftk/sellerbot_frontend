@@ -48,8 +48,7 @@ export default {
       this.ml_item = this.inputvalue;
       this.textareavalue = 'Buscando na API ...';
       axios
-        .post(
-          "http://api.sellerbot.com.br/item/general-data",
+        .post(this.$store.state.backend_url + "/item/general-data",
           { item: { ml_item_id: this.ml_item, }},
           { headers: { Authorization: this.$store.state.authToken } }
         )

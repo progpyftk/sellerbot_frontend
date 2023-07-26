@@ -6,7 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     authToken: 'meutoken',
-    currentUser: 'not logged'
+    currentUser: 'not logged',
+    //backend_url: 'http://api.sellerbot.com.br'
+    backend_url: 'http://localhost:3000'
   },
   getters: {},
   mutations: {},

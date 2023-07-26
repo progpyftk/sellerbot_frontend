@@ -101,7 +101,7 @@ export default {
     getItems() {
       this.loadingtable = true;
       axios
-        .get("http://api.sellerbot.com.br/fulfillment/flex", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/fulfillment/flex", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.items = res.data;
           console.log(res.data);
@@ -122,7 +122,7 @@ export default {
     turnOffFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://api.sellerbot.com.br/fulfillment/flex", 
+        .post(this.$store.state.backend_url + "/fulfillment/flex", 
         { item: { ml_item_id: item.ml_item_id }},
         { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
@@ -144,7 +144,7 @@ export default {
     turnOnFlex(item) {
       console.log(item.ml_item_id);
       axios
-        .post("http://api.sellerbot.com.br/fulfillment/flex", 
+        .post(this.$store.state.backend_url + "/fulfillment/flex", 
         {item: { ml_item_id: item.ml_item_id }},
         { headers: { Authorization: this.$store.state.authToken }}
         )

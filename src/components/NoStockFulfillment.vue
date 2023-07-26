@@ -73,7 +73,7 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        .get("http://api.sellerbot.com.br/fulfillment/index", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/fulfillment/index", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.anuncios = res.data;
           console.log(res.data);
