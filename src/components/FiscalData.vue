@@ -59,6 +59,10 @@ export default {
         .catch((error) => {
           this.textareavalue = 'Anúncio não encontrado!';
           console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
         })
         .finally(() => {
           this.loading = false;

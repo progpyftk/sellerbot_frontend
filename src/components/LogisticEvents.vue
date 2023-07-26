@@ -74,7 +74,7 @@
         getLogisticEvents() {
         this.loadingtable = true;
         axios
-          .get("http://api.sellerbot.com.br/item/logistic-events")
+          .get("http://api.sellerbot.com.br/item/logistic-events", { headers: { Authorization: this.$store.state.authToken } })
           .then((res) => {
             this.logisticevents = res.data;
             console.log(res.data);
@@ -83,6 +83,10 @@
           .catch((error) => {
             console.log(error);
             this.loadingtable = false;
+            if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
           });
       },
       formatDate(item) {

@@ -50,7 +50,8 @@ export default {
       axios
         .post(
           "http://api.sellerbot.com.br/item/general-data",
-          { item: { ml_item_id: this.ml_item, }, }
+          { item: { ml_item_id: this.ml_item, }},
+          { headers: { Authorization: this.$store.state.authToken } }
         )
         .then((res) => {
           console.log(JSON.stringify(res.data));
@@ -59,6 +60,10 @@ export default {
         .catch((error) => {
           this.textareavalue = 'Anúncio não encontrado!';
           console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
         })
         .finally(() => {
           this.loading = false;

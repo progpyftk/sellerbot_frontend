@@ -73,7 +73,7 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        .get("http://api.sellerbot.com.br/fulfillment/index")
+        .get("http://api.sellerbot.com.br/fulfillment/index", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.anuncios = res.data;
           console.log(res.data);
@@ -81,6 +81,10 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
           this.loadingtable = false;
         });
     },

@@ -3,27 +3,16 @@
     <div height="400px" v-if="loadingtable == true">
       <v-flex>
         <v-card class="d-flex align-center justify-center" height="400px">
-          <v-progress-circular
-            :size="50"
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
+          <v-progress-circular :size="50" indeterminate color="primary"></v-progress-circular>
         </v-card>
       </v-flex>
     </div>
 
     <v-card class="pa-8" outlined tile v-else>
-      <v-data-table
-        :headers="headers"
-        :items="anuncios"
-        item-key="item_id"
-        class="elevation-1"
-        must-sort
-      >
+      <v-data-table :headers="headers" :items="anuncios" item-key="item_id" class="elevation-1" must-sort>
         <template v-slot:top>
           <v-toolbar flar>
-            <v-toolbar-title
-              >Anúncios com Erro de Frete Grátis
+            <v-toolbar-title>Anúncios com Erro de Frete Grátis
             </v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
@@ -33,36 +22,21 @@
           {{ formatDate(item.change_time) }}
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            v-if="updatingshipping == false"
-            small
-            @click="changeShipping(item)"
-          >
+          <v-icon v-if="updatingshipping == false" small @click="changeShipping(item)">
             mdi-truck-fast
           </v-icon>
-          <v-progress-circular
-            v-else
-            :size="15"
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
+          <v-progress-circular v-else :size="15" indeterminate color="primary"></v-progress-circular>
         </template>
         <template v-slot:item.permalink="{ item }">
-          <v-icon
-            large
-            dense
-            color="orange darken-2"
-            class="mr-2"
-            @click="linkAnuncio(item)"
-            >mdi-arrow-right-bold</v-icon
-          >
+          <v-icon large dense color="orange darken-2" class="mr-2"
+            @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
       </v-data-table>
     </v-card>
   </div>
 </template>
       
-      <script>
+<script>
 /* eslint-disable vue/no-unused-components */
 /* eslint-disable vue/no-unused-vars */
 /* eslint-disable vue/valid-v-slot */
@@ -100,7 +74,7 @@ export default {
     getAnuncios() {
       this.loadingtable = true;
       axios
-        .get("http://api.sellerbot.com.br/item/free-shipping")
+        .get("http://api.sellerbot.com.br/item/free-shipping", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.anuncios = res.data;
           console.log(res.data);
@@ -123,9 +97,11 @@ export default {
       this.editedItem = Object.assign({}, item);
       console.log(this.editedItem.ml_item_id);
       axios
-        .post("http://api.sellerbot.com.br/item/free-shipping", {
-          item: { ml_item_id: this.editedItem.ml_item_id },
-        })
+        .post(
+          "http://api.sellerbot.com.br/item/free-shipping", 
+        {item: { ml_item_id: this.editedItem.ml_item_id }},
+        { headers: { Authorization: this.$store.state.authToken } }
+        )
         .then((res) => {
           console.log("foi tudo bem");
           console.log(res);
@@ -133,6 +109,10 @@ export default {
         .catch((error) => {
           console.log("deu erro na alteracao do frete gratis");
           console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
         })
         .finally(() => {
           this.getAnuncios();

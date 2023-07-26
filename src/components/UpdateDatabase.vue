@@ -46,7 +46,7 @@ export default {
     updateDatabse() {
       this.loading = true;
       axios
-        .get("http://api.sellerbot.com.br/item/update-database")
+        .get("http://api.sellerbot.com.br/item/update-database", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.message = 'Atualizando ...'
           console.log("Atualizando DB");
@@ -56,6 +56,10 @@ export default {
         .catch((error) => {
           this.message = 'Ocorreu algum erro durante a atualização!'
           console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
           console.log("Deu algum erro");
         })
         .finally(() => {

@@ -1,49 +1,64 @@
 <template>
-  <div height="400px" v-if="logging == true">
-    <v-flex>
-      <v-card class="d-flex align-center justify-center" height="400px">
-        <v-progress-circular :size="50" indeterminate color="primary"></v-progress-circular>
-      </v-card>
-    </v-flex>
-  </div>
-
-  <div v-else>
-    <div v-if="loginform == true">
-      <v-card class="pa-8" outlined tile>
-        <v-card width="400" pa-md-4 mx class="pa-md-8 mx-lg-auto">
-          <v-card-title>Seller Bot - Login</v-card-title>
-          <v-card-text>
-            <validation-observer ref="observer" v-slot="{ invalid }">
-              <form @submit.prevent="submit">
-                <validation-provider v-slot="{ errors }" name="email" rules="required|email">
-                  <v-text-field color="primary" v-model="email" :error-messages="errors" label="E-mail"
-                    required></v-text-field>
-                </validation-provider>
-                <validation-provider v-slot="{ errors }" name="password" rules="required">
-                  <v-text-field v-model="password" :error-messages="errors" label="Password" required></v-text-field>
-                </validation-provider>
-                <v-card-actions>
-                  <v-btn color="primary" class="mr-4" type="submit" :disabled="invalid">
-                    login
-                  </v-btn>
-                </v-card-actions>
-              </form>
-              email: lorenzo@gmail.com
-              password: 1234566
-              {{ $store.state.authToken }}
-            </validation-observer>
-          </v-card-text>
+  <div v-if="$store.state.currentUser == 'not logged'">
+    <div height="400px" v-if="logging == true">
+      <v-flex>
+        <v-card class="d-flex align-center justify-center" height="400px">
+          <v-progress-circular :size="50" indeterminate color="primary"></v-progress-circular>
         </v-card>
-      </v-card>
+      </v-flex>
     </div>
 
     <div v-else>
-      LOGIN SUCESSFULL OR NOT !!!!!!
+      <div v-if="loginform == true">
+        <v-card class="pa-8" outlined tile>
+          <v-card width="400" pa-md-4 mx class="pa-md-8 mx-lg-auto">
+            <v-card-title>Seller Bot - Login</v-card-title>
+            <v-card-text>
+              <validation-observer ref="observer" v-slot="{ invalid }">
+                <form @submit.prevent="submit">
+                  <validation-provider v-slot="{ errors }" name="email" rules="required|email">
+                    <v-text-field color="primary" v-model="email" :error-messages="errors" label="E-mail"
+                      required></v-text-field>
+                  </validation-provider>
+                  <validation-provider v-slot="{ errors }" name="password" rules="required">
+                    <v-text-field v-model="password" :error-messages="errors" label="Password" required></v-text-field>
+                  </validation-provider>
+                  <v-card-actions>
+                    <v-btn color="primary" class="mr-4" type="submit" :disabled="invalid">
+                      login
+                    </v-btn>
+                  </v-card-actions>
+                </form>
+                email: lorenzo@gmail.com
+                password: 1234566
+                {{ $store.state.authToken }}
+              </validation-observer>
+            </v-card-text>
+          </v-card>
+        </v-card>
+      </div>
+
+      <div v-else>
+        <v-card class="pa-8" outlined tile>
+          <v-card width="400" pa-md-4 mx class="pa-md-8 mx-lg-auto">
+            <v-card-title>Welcome to Seller Bot!</v-card-title>
+            <v-card-text>
+              Increase your sells!
+            </v-card-text>
+          </v-card>
+        </v-card>
+      </div>
     </div>
-
-
-
-
+  </div>
+  <div v-else>
+    <v-card class="pa-8" outlined tile>
+      <v-card width="400" pa-md-4 mx class="pa-md-8 mx-lg-auto">
+        <v-card-title>Seller Bot</v-card-title>
+        <v-card-text>
+          Hello {{ $store.state.currentUser }}, you are already logged in!
+        </v-card-text>
+      </v-card>
+    </v-card>
   </div>
 </template>
 
@@ -103,7 +118,6 @@ export default {
       this.$refs.observer.validate();
       console.log(this.email)
       console.log(this.password)
-      
       axios
         .post('http://localhost:3000/login',
           {
