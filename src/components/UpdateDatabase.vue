@@ -46,12 +46,12 @@ export default {
     updateDatabse() {
       this.loading = true;
       axios
-        .get(this.$store.state.backend_url + "/item/update-database", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/webhook/updatedb", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.message = 'Atualizando ...'
           console.log("Atualizando DB");
           console.log(res);
-          
+          this.$store.state.databaseUpdate = "database updated!"
         })
         .catch((error) => {
           this.message = 'Ocorreu algum erro durante a atualização!'

@@ -31,6 +31,8 @@
         Seller Bot v1.0.  </v-toolbar-title>
         <v-spacer></v-spacer>
           User: {{ $store.state.currentUser }}
+          <v-spacer></v-spacer>
+          Database: {{ this.$store.state.databaseUpdate }}
         <v-spacer></v-spacer>
     </v-app-bar>
 

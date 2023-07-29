@@ -25,13 +25,10 @@
                   </validation-provider>
                   <v-card-actions>
                     <v-btn color="primary" class="mr-4" type="submit" :disabled="invalid">
-                      login
+                      Login
                     </v-btn>
                   </v-card-actions>
                 </form>
-                email: lorenzo@gmail.com
-                password: 1234566
-                {{ $store.state.authToken }}
               </validation-observer>
             </v-card-text>
           </v-card>

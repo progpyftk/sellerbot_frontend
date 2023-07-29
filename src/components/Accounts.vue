@@ -12,7 +12,7 @@
       <v-data-table :headers="headers" :items="accounts" item-key="ml_seller_id" class="elevation-1">
         <template v-slot:top>
           <v-toolbar rounded elevation="1">
-            <v-toolbar-title>Accounts on Seller Bot {{ $store.state.authToken }}</v-toolbar-title>
+            <v-toolbar-title>MercadoLivre - Contas on Seller Bot</v-toolbar-title>
             <v-divider class="mx-4" insert vertical></v-divider>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
@@ -148,11 +148,18 @@ export default {
       console.log(this.$store.state.authToken)
       axios
         .get(this.$store.state.backend_url + "/seller/index",
-          { headers: { Authorization: this.$store.state.authToken } })
+          {
+            headers: {
+              'Content-Type': 'application/json;charset=UTF-8',
+              'Accept': 'application/json', Authorization: this.$store.state.authToken
+            }
+            
+          })
         .then((res) => {
           this.accounts = res.data;
           console.log(res.data);
           this.loadingtable = false;
+          console.log(res.headers)
         })
         .catch((error) => {
           console.log("--- erro no axios ---:");
