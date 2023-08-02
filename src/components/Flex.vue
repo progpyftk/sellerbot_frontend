@@ -16,11 +16,11 @@
       <v-data-table
         :headers="headers"
         :items="items"
-        item-key="item_id"
+        item-key="ml_item_id"
         class="elevation-1"
-        :sort-by="['quantity']"
+        :sort-by="['store_quantity']"
         :sort-desc="[false]"
-        :item-class="itemRowBackground"
+  
         must-sort
       >
         <template v-slot:top>
@@ -30,15 +30,15 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.link="{ item }">
+        <template v-slot:item.permalink="{ item }">
           <v-icon large dense color="orange darken-2" class="mr-2" @click="linkAnuncio(item)">mdi-arrow-right-bold</v-icon>
         </template>
 
         <template v-slot:item.recommendation="{ item }">
-          <p v-if="item.quantity<10 && item.flex==false">Ok</p>
-          <p v-if="item.quantity<10 && item.flex==true">Desligar</p>
-          <p v-if="item.quantity>10 && item.flex==false">Ligar</p>
-          <p v-if="item.quantity>10 && item.flex==true">OK</p>
+          <p v-if="item.store_quantity<10 && item.flex==false">Ok</p>
+          <p v-if="item.store_quantity<10 && item.flex==true">Desligar</p>
+          <p v-if="item.store_quantity>10 && item.flex==false">Ligar</p>
+          <p v-if="item.store_quantity>10 && item.flex==true">OK</p>
         </template>
 
         <template v-slot:item.flex="{ item }">
@@ -80,11 +80,11 @@ export default {
         { text: "Anúncio", align: "start", sortable: false, value: "ml_item_id" },
         { text: "É variação?", value: "variation" },
         { text: "ID Variação", value: "variation_id" },
-        { text: "Seller", value: "seller_nickname" },
+        { text: "Seller", value: "seller_id" },
         { text: "SKU", value: "sku" },
-        { text: "Quantidade", value: "quantity" },
+        { text: "Quantidade Galpão", value: "store_quantity" },
         { text: "Flex", value: "flex" },
-        { text: "Link", value: "link" },
+        { text: "Link", value: "permalink" },
         { text: "Ligar/Desligar", value: "actions", sortable: false },
         { text: "Recomendação", value: "recommendation", sortable: false },
       ],
@@ -117,7 +117,7 @@ export default {
         });
     },
     linkAnuncio(item) { 
-      window.open(item.link);
+      window.open(item.permalink);
     },
     turnOffFlex(item) {
       console.log(item.ml_item_id);
@@ -164,22 +164,22 @@ export default {
     },
     itemRowBackground(item) {
       console.log('Entre na funcao da cor')
-      if (item.quantity < 10 && item.flex == true) {
+      if (item.store_quantity < 10 && item.flex == true) {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == true) {
+      if (item.store_quantity > 20 && item.flex == true) {
         return "style-2";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == true) {
+      if (item.store_quantity < 20 && item.store_quantity >10 && item.flex == true) {
         return "style-3";
       }
-      if (item.quantity < 20 && item.quantity >10 && item.flex == false) {
+      if (item.store_quantity < 20 && item.store_quantity >10 && item.flex == false) {
         return "style-1";
       }
-      if (item.quantity > 20 && item.flex == false) {
+      if (item.store_quantity > 20 && item.flex == false) {
         return "style-1";
       }
-      if (item.quantity < 10 && item.flex == false) {
+      if (item.store_quantity < 10 && item.flex == false) {
         return "style-2";
       }
     }

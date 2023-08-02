@@ -138,7 +138,6 @@ export default {
         })
         .catch((error) => {
           console.log("Deu erro, log do erro abaixo:");
-          console.log(res);
           console.log(error);
           this.login_error_message = 'Login not successful '
         })
