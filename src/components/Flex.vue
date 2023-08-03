@@ -20,6 +20,7 @@
         class="elevation-1"
         :sort-by="['store_quantity']"
         :sort-desc="[false]"
+        :item-class="itemRowBackground"
   
         must-sort
       >
@@ -86,7 +87,7 @@ export default {
         { text: "Flex", value: "flex" },
         { text: "Link", value: "permalink" },
         { text: "Ligar/Desligar", value: "actions", sortable: false },
-        { text: "Recomendação", value: "recommendation", sortable: false },
+        { text: "Recomendação", value: "recommendation", sortable: true },
       ],
       items: {},
       loadingtable: false,

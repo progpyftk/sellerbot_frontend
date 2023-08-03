@@ -22,13 +22,13 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar 
+    <v-app-bar class="title"
       color="#f0f0f0"
       rounded app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <v-avatar size="25"> <img src="./assets/laranja.png" /> </v-avatar>
-        Seller Bot v1.0.  </v-toolbar-title>
+        <v-avatar size="35"> <img src="./assets/laranja.png" /> </v-avatar>
+        SellerBot   v1.0.0  </v-toolbar-title>
         <v-spacer></v-spacer>
           User: {{ $store.state.currentUser }}
           <v-spacer></v-spacer>
@@ -47,10 +47,10 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-    { 
+      /*{ 
         title: "Signup", 
         icon: "mdi-account-plus", 
-        router_name: "/signup" },
+        router_name: "/signup" },*/
       { 
         title: "Login", 
         icon: "mdi-login", 
@@ -64,7 +64,7 @@ export default {
         icon: "mdi-package-variant",
         router_name: "/no-stock-fulfillment",
       },
-      {
+      /*{
         title: "Adicionar Estoque",
         icon: "mdi-plus-box",
         router_name: "/add-stock",
@@ -78,7 +78,7 @@ export default {
         title: "Eventos de Logística",
         icon: "mdi-truck-fast",
         router_name: "/logistic-events",
-      },
+      },*/
       {
         title: "Frete Grátiss",
         icon: "mdi-truck-fast",
@@ -89,11 +89,11 @@ export default {
         icon: "mdi-truck-fast",
         router_name: "/flex",
       },
-      {
+      /*{
         title: "Flex - Mercado Envios",
         icon: "mdi-truck-fast",
         router_name: "/flex-me",
-      },
+      },*/
       {
         title: "API - Dados Fiscais",
         icon: "mdi-api",
@@ -105,7 +105,7 @@ export default {
         router_name: "/general-data",
       },
       {
-        title: "Atualizar DB",
+        title: "Atualizar DB - Tiny",
         icon: "mdi-database",
         router_name: "/update-db",
       },
