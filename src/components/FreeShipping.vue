@@ -97,9 +97,10 @@ export default {
       this.updatingshipping = true;
       this.editedItem = Object.assign({}, item);
       console.log(this.editedItem.ml_item_id);
+      console.log(this.editedItem.seller_id);
       axios
         .post(this.$store.state.backend_url + "/item/free-shipping", 
-        {item: { ml_item_id: this.editedItem.ml_item_id }},
+        {item: { ml_item_id: this.editedItem.ml_item_id, seller_id:this.editedItem.seller_id  }},
         { headers: { Authorization: this.$store.state.authToken } }
         )
         .then((res) => {

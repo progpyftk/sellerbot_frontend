@@ -109,6 +109,11 @@ export default {
         icon: "mdi-database",
         router_name: "/update-db",
       },
+      {
+        title: "Promoções",
+        icon: "mdi-database",
+        router_name: "/deals",
+      },
     ],
   }),
 };

@@ -3,6 +3,7 @@
     <div height="400px" v-if="loading == true">
       <v-flex>
         <v-card class="d-flex align-center justify-center" height="400px">
+          <v-text-field> Essa função recebe varre todo sistema do Tiny, porém devido às limitações do Tiny, pode levar bastante tempo</v-text-field>
           <v-progress-circular
             :size="50"
             indeterminate
@@ -16,7 +17,7 @@
       <v-col cols="12" sm="6" md="4">
         <v-text-field
             v-model="message"
-            label="Status da Atiização"
+            label="Status da Atualização"
         >{{ message }}</v-text-field>
       </v-col>
     </v-card>
@@ -46,7 +47,7 @@ export default {
     updateDatabse() {
       this.loading = true;
       axios
-        .get(this.$store.state.backend_url + "/webhook/updatedb", { headers: { Authorization: this.$store.state.authToken } })
+        .get(this.$store.state.backend_url + "/webhook/update-tiny-stock", { headers: { Authorization: this.$store.state.authToken } })
         .then((res) => {
           this.message = 'Atualizando ...'
           console.log("Atualizando DB");
