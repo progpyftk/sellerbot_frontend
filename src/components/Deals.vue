@@ -29,15 +29,17 @@
                 Tipo: {{ selectedItem.type }}<br><br>
                 Seller: {{ selectedItem.seller }}<br><br>
                 Status: {{ selectedItem.status }}<br><br>
-                Anúncios Aptos: xxxxx<br><br>
-                Anúncios Ativados: yyyyy<br>
+                <div v-if="anuncios_aptos < 200">Anúncios Aptos: {{ anuncios_aptos }}<br><br></div>
+                <div v-else>Anúncios Aptos: +200<br><br></div>
+
               </v-card-text>
 
               <v-divider class="mx-4"></v-divider>
               <v-card-title>Ativação de Anúncios</v-card-title>
               <v-col cols="12" md="4">
-                <v-text-field v-model="markup" label="Markup Desejado" required hide-details type="number"
-                  min="0" hint="Apenas os anúncios que atenderem serão ativados"  prepend-inner-icon="mdi-percent-box"></v-text-field>
+                <v-text-field v-model="markup" label="Markup Desejado" required hide-details type="number" min="0"
+                  hint="Apenas os anúncios que atenderem serão ativados"
+                  prepend-inner-icon="mdi-percent-box"></v-text-field>
               </v-col>
               <v-card-actions>
 
@@ -90,7 +92,6 @@ export default {
       dialog: false,
       markup: 5,
       anuncios_aptos: 0,
-      anuncios_ativos: 0,
     };
   },
 
@@ -120,6 +121,8 @@ export default {
         .then((res) => {
           // aqui é onde vamos pegar os dados da quantidade de anuncios apto e tal
           console.log(res);
+          this.anuncios_aptos = res.data.total_items
+          console.log(this.anuncios_aptos);
         })
         .catch((error) => {
           console.log("Deu erro, log do erro abaixo:");
@@ -132,19 +135,6 @@ export default {
         .finally(() => {
           this.dialog = true;
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
     },
 
     close() {
@@ -175,9 +165,31 @@ export default {
     ativarPromocao() {
       console.log(this.selectedItem.name)
       console.log(this.markup)
-
-      // o item selecionado é o que nos dá todas informações para mandar para o backend e ativar as promoções
-      // lembrar de colocar o markup para 5% apos finalizar
+      axios
+        .post(this.$store.state.backend_url + "/seller/activate-promotion",
+          {
+            promotion_data: {
+              promotion_id: this.selectedItem.promotion_id,
+              type: this.selectedItem.type,
+              seller: this.selectedItem.seller,
+            }
+          },
+          { headers: { Authorization: this.$store.state.authToken } }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log("Deu erro, log do erro abaixo:");
+          console.log(error);
+          if (error.request.status === 401) {
+            console.log("--- user não está logado ---:");
+            this.$router.push('login')
+          }
+        })
+        .finally(() => {
+          this.dialog = true;
+        });
     },
 
 
