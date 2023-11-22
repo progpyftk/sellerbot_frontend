@@ -52,7 +52,7 @@ export default {
           value: "ml_item_id",
         },
         { text: "Título", value: "title" },
-        { text: "Preço", value: "price" },
+        { text: "Inventory ID", value: "inventory_id" },
         { text: "Qtt Disponível", value: "available_quantity" },
         { text: "Vendidos", value: "sold_quantity" },
         { text: "Logística", value: "logistic_type", sortable: false },

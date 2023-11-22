@@ -43,14 +43,11 @@
 </template>
 
 <script>
+
 export default {
   data: () => ({
     drawer: null,
     items: [
-      /*{ 
-        title: "Signup", 
-        icon: "mdi-account-plus", 
-        router_name: "/signup" },*/
       { 
         title: "Login", 
         icon: "mdi-login", 
@@ -64,21 +61,6 @@ export default {
         icon: "mdi-package-variant",
         router_name: "/no-stock-fulfillment",
       },
-      /*{
-        title: "Adicionar Estoque",
-        icon: "mdi-plus-box",
-        router_name: "/add-stock",
-      },
-      {
-        title: "Eventos de Preço",
-        icon: "mdi-currency-usd",
-        router_name: "/price-events",
-      },
-      {
-        title: "Eventos de Logística",
-        icon: "mdi-truck-fast",
-        router_name: "/logistic-events",
-      },*/
       {
         title: "Frete Grátiss",
         icon: "mdi-truck-fast",
@@ -89,11 +71,6 @@ export default {
         icon: "mdi-truck-fast",
         router_name: "/flex",
       },
-      /*{
-        title: "Flex - Mercado Envios",
-        icon: "mdi-truck-fast",
-        router_name: "/flex-me",
-      },*/
       {
         title: "API - Dados Fiscais",
         icon: "mdi-api",
@@ -116,6 +93,14 @@ export default {
       },
     ],
   }),
+
+  created() {
+    // Inicializa a conexão do Action Cable através do Vuex
+    console.log('Criando o createCable')
+    this.$store.dispatch('createCable');
+  },
+
+
 };
 </script>
 

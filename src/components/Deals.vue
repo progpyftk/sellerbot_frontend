@@ -9,8 +9,8 @@
     </div>
 
     <v-card class="pa-8" outlined tile v-else>
-      <v-data-table :headers="headers" :items="items" item-key="promotion_id" class="elevation-1" :sort-by="['seller']"
-        must-sort @click:row="abrirPromocao">
+      <v-data-table :headers="headers" :items="items" class="elevation-1" :sort-by="['seller']" must-sort
+        @click:row="abrirPromocao">
         <template v-slot:top>
           <v-toolbar flar>
             <v-toolbar-title>Controle de Promoções</v-toolbar-title>
@@ -43,7 +43,7 @@
               </v-col>
               <v-card-actions>
 
-                <v-btn color="deep-purple lighten-2" text @click="ativarPromocao">
+                <v-btn color="deep-purple lighten-2" :disabled="isSubscribed" text @click="ativarPromocao">
                   Ativar todos
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -92,10 +92,14 @@ export default {
       dialog: false,
       markup: 5,
       anuncios_aptos: 0,
+      isSubscribed: false,
+      currentChannelKey: null,
+      subscription: null,
     };
   },
 
   created() {
+    this.$store.dispatch('createCable'); // Isso vai inicializar a conexão Action Cable
     this.getItems();
   },
 
@@ -163,6 +167,35 @@ export default {
     },
 
     ativarPromocao() {
+      // Acessa o consumidor do Action Cable do estado Vuex
+      const cable = this.$store.state.cable;
+      
+      console.log('Cable instance from Vuex:', cable);
+
+      if (!cable) {
+        console.error('Action Cable consumer instance is not available.');
+        return;
+      }
+
+      // A chave única para identificar a subscrição
+      const channelKey = `${this.selectedItem.promotion_id}_${this.selectedItem.seller}`;
+      console.log(channelKey)
+
+      // Subscreve ao canal no Action Cable usando a chave única
+      this.subscription = cable.subscriptions.create(
+        { channel: "PromotionNotificationChannel", channel_key:channelKey },
+        {
+          received: (data) => {
+            console.log('Received data:', data);
+            // Lida com os dados recebidos
+            if (data.status === 'completed') {
+              // Atualiza o estado de subscrição
+              this.isSubscribed = false;
+            }
+          }
+        }
+      );
+
       console.log(this.selectedItem.name)
       console.log(this.markup)
       axios
