@@ -10,7 +10,7 @@
 
     <v-card class="pa-8" outlined tile v-else>
       <v-data-table :headers="headers" :items="items" class="elevation-1" :sort-by="['seller']" must-sort
-        @click:row="abrirPromocao">
+        @click:row="handleRowClick">
         <template v-slot:top>
           <v-toolbar flar>
             <v-toolbar-title>Controle de Promoções</v-toolbar-title>
@@ -18,11 +18,11 @@
             <v-spacer></v-spacer>
           </v-toolbar>
 
-          <v-dialog v-model="dialog" max-width="600px" class="mx-auto my-20">
-            <v-card>
+          <v-dialog v-model="dialog" persistent :max-width="loading_promotion ? 'auto' : '600px'" class="mx-auto my-20">
+            <v-card flat v-if="!loading_promotion">
+              <!-- Dados da Promoção -->
               <v-divider class="mx-4"></v-divider>
               <v-card-title class="justify-center text-h5">{{ selectedItem.name }}</v-card-title>
-
               <v-divider class="mx-4"></v-divider>
               <br>
               <v-card-text class="text-h6">
@@ -43,11 +43,27 @@
               </v-col>
               <v-card-actions>
 
-                <v-btn color="deep-purple lighten-2" :disabled="isSubscribed" text @click="ativarPromocao">
+                <v-btn color="deep-purple lighten-2" :disabled="isProcessingPromotions" text @click="ativarPromocao">
                   Ativar todos
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Fechar</v-btn>
+              </v-card-actions>
+            </v-card>
+            <!-- Spinner que será exibido quando estiver carregando -->
+            <div v-else class="d-flex justify-center align-center" style="height: 200px;">
+              <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+            </div>
+          </v-dialog>
+
+          <!-- Diálogo de Processamento -->
+          <v-dialog v-model="processingDialog" persistent max-width="300px">
+            <v-card>
+              <v-card-title class="headline">Processamento em Andamento</v-card-title>
+              <v-card-text>Um conjunto de promoções está sendo ativado. Por favor, aguarde a conclusão.</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" text @click="processingDialog = false">Fechar</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -58,6 +74,8 @@
           <p>MercadoLivre: {{ item.benefits ? item.benefits.meli_percent : '' }}%</p>
           <p>Seller: {{ item.benefits ? item.benefits.seller_percent : '' }}%</p>
         </template>
+
+
 
 
       </v-data-table>
@@ -95,15 +113,37 @@ export default {
       isSubscribed: false,
       currentChannelKey: null,
       subscription: null,
+      processingDialog: false,
+      loading_promotion: false,
     };
   },
 
   created() {
     this.$store.dispatch('createCable'); // Isso vai inicializar a conexão Action Cable
     this.getItems();
+    console.log("this.isProcessingPromotions()")
+    console.log(this.isProcessingPromotions)
+  },
+
+  computed: {
+    isProcessingPromotions() {
+      return this.$store.state.isProcessingPromotions;
+    },
   },
 
   methods: {
+    handleRowClick(row) {
+
+      if (this.isProcessingPromotions) {
+        // Se as promoções estiverem sendo processadas, mostre o diálogo de processamento.
+        this.processingDialog = true;
+      } else {
+        this.loadingtable = true;
+        // Se as promoções não estiverem sendo processadas, abra o diálogo de promoção.
+        this.abrirPromocao(row);
+      }
+    },
+
     abrirPromocao(row) {
       this.selectedItem = row
       console.log(this.selectedItem.seller)
@@ -137,6 +177,7 @@ export default {
           }
         })
         .finally(() => {
+          this.loadingtable = false;
           this.dialog = true;
         });
     },
@@ -146,7 +187,6 @@ export default {
       this.dialog = false;
     },
 
-
     getItems() {
       this.loadingtable = true;
       axios
@@ -155,6 +195,7 @@ export default {
           this.items = res.data;
           console.log(res.data);
           this.loadingtable = false;
+
         })
         .catch((error) => {
           console.log(error);
@@ -164,17 +205,36 @@ export default {
           }
           this.loadingtable = false;
         });
+
+      axios
+        .get(this.$store.state.backend_url + "/seller/promotions-status", { headers: { Authorization: this.$store.state.authToken } })
+        .then((res) => {
+          console.log('Pegando via axios se existe alguma promocao sendo processada')
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          console.log("Atualiza o status do processamente - falta colocar issno codigo")
+        });
     },
 
     ativarPromocao() {
+      this.loading_promotion = true;
       // Acessa o consumidor do Action Cable do estado Vuex
       const cable = this.$store.state.cable;
-      
+
       console.log('Cable instance from Vuex:', cable);
 
       if (!cable) {
         console.error('Action Cable consumer instance is not available.');
         return;
+      }
+
+      if (this.subscription) {
+        console.log('Limpando subscription 1 se houver')
+        this.subscription.unsubscribe();
       }
 
       // A chave única para identificar a subscrição
@@ -183,14 +243,20 @@ export default {
 
       // Subscreve ao canal no Action Cable usando a chave única
       this.subscription = cable.subscriptions.create(
-        { channel: "PromotionNotificationChannel", channel_key:channelKey },
+        { channel: "PromotionNotificationChannel", channel_key: channelKey },
         {
           received: (data) => {
             console.log('Received data:', data);
             // Lida com os dados recebidos
+            if (data.status === 'processing_promotions') {
+              this.$store.dispatch('setProcessingPromotions', true);
+            }
             if (data.status === 'completed') {
-              // Atualiza o estado de subscrição
-              this.isSubscribed = false;
+              this.$store.dispatch('setProcessingPromotions', false);
+              console.log('Dispatched to setProcessingPromotions with false');
+              if (this.subscription) {
+                this.subscription.unsubscribe();
+              }
             }
           }
         }
@@ -221,7 +287,8 @@ export default {
           }
         })
         .finally(() => {
-          this.dialog = true;
+          this.dialog = false;
+          this.loading_promotion = false;
         });
     },
 
@@ -263,6 +330,19 @@ export default {
 
 .style-3 {
   background-color: rgb(244, 245, 218);
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Certifique-se de que é alto o suficiente para estar acima de outros elementos */
 }
 </style>
 

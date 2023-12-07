@@ -2,12 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import actioncable from 'actioncable';
 
-
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    isProcessingPromotions: false,
     cable: null,
     authToken: 'meutoken',
     currentUser: 'not logged',
@@ -22,11 +21,18 @@ export default new Vuex.Store({
       console.log('Setting cable instance:', cable);
       state.cable = cable;
     },
+    SET_PROCESSING_PROMOTIONS(state, isProcessing) {
+      console.log(`isProcessingPromotions is set to: ${isProcessing}`);
+      state.isProcessingPromotions = isProcessing;
+    },
   },
   actions: {
     createCable({ commit }) {
       const cable = actioncable.createConsumer('ws://localhost:3000/cable');
       commit('SET_CABLE', cable);
+    },
+    setProcessingPromotions({ commit }, isProcessing) {
+      commit('SET_PROCESSING_PROMOTIONS', isProcessing);
     },
   },
   modules: {},
