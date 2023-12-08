@@ -1,17 +1,12 @@
-#dockercompose
 version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: ${BUILD_TARGET:-development-stage}
+    build: .
     ports:
-      - "${PORT:-8080}:${PORT:-8080}"
-    environment: 
-      - NODE_ENV=${NODE_ENV:-development}
+      - '8080:8080'
+    environment:
+      - NODE_ENV=development
     volumes:
+      - '.:/app'
       - '/app/node_modules'
-      - './:/app'
-
