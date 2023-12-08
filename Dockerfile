@@ -1,20 +1,20 @@
-FROM node:lts-alpine
-
-# bind your app to the gateway IP
-ENV HOST=0.0.0.0
-
-# make the 'app' folder the current working directory
+# Estágio de desenvolvimento
+FROM node:lts-alpine as development-stage
 WORKDIR /app
-
-# copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
-
-# install project dependencies
 RUN npm install
-
-# copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
+CMD ["npm", "run", "serve"]
 
-EXPOSE 8080
+# Estágio de produção
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-ENTRYPOINT [ "npm", "run", "serve" ]
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

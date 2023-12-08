@@ -1,18 +1,25 @@
-version: '3.7'
+version: '3.8'
 
 services:
-    frontend:
-      container_name: sellerbot_frontend
-      build:
-        context: .
-        dockerfile: Dockerfile
-      volumes:
-        - '/app/node_modules'
-        - './:/app'
-      stdin_open: true
-      tty: true
-      ports:
-        - '8080:8080'
-      environment: 
-        - CHOKIDAR_USEPOLLING=true
-        - HOST=0.0.0.0
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development-stage # para desenvolvimento
+    ports:
+      - '8080:8080'
+    environment: 
+      - NODE_ENV=development
+    volumes:
+      - '/app/node_modules'
+      - './:/app'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production-stage # para produção
+    ports:
+      - '80:80'
+    environment: 
+      - NODE_ENV=production
