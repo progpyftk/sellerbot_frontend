@@ -14,11 +14,10 @@ RUN npm install
 COPY . .
 
 # Define o comando padrão para execução
-CMD if [ "$NODE_ENV" = "production" ]; \
-    then \
-      npm run build && \
-      npm install -g serve && \
-      serve -s dist -p 80; \
-    else \
-      npm run serve; \
-    fi
+CMD if [[ "$NODE_ENV" = "production" ]]; then \
+    npm run build && \
+    npm install -g serve && \
+    serve -s dist -p 80; \
+  else \
+    npm run serve; \
+  fi
