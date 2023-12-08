@@ -1,5 +1,5 @@
-const { defineConfig } = require("@vue/cli-service");
-module.exports = defineConfig({
+
+module.exports = {
   transpileDependencies: ["vuetify"],
   configureWebpack: {
     entry: "./src/main.js",
@@ -13,4 +13,4 @@ module.exports = defineConfig({
         poll: 1000,
     },
 },
-});
+};
