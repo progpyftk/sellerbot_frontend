@@ -28,7 +28,7 @@ export default new Vuex.Store({
   },
   actions: {
     createCable({ commit }) {
-      const cable = actioncable.createConsumer('ws://localhost:3000/cable');
+      const cable = actioncable.createConsumer(process.env.VUE_APP_WEBSOCKET_HOST + '/cable');
       commit('SET_CABLE', cable);
     },
     setProcessingPromotions({ commit }, isProcessing) {
